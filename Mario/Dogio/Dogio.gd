@@ -2,6 +2,7 @@
 extends KinematicBody2D
 
 onready var sprite = get_node( "Sprite" )
+onready var sfx = get_node( "SFX" )
 #This is a simple collision demo showing how
 #the kinematic cotroller works.
 #move() will allow to move the node, and will
@@ -32,6 +33,17 @@ var jumping=false
 var prev_jump_pressed=false
 
 var facing = 1 setget _set_facing
+
+var dead = false
+
+func die():
+	set_fixed_process( false )
+	sfx.play( "death" )
+	self.dead = true
+
+func get_coin( coin ):
+	sfx.play( "coin" )
+	coin.queue_free()
 
 func _fixed_process(delta):
 	var new_facing = self.facing
@@ -130,17 +142,23 @@ func _fixed_process(delta):
 		# Makes controls more snappy.
 		velocity.y=-JUMP_SPEED	
 		jumping=true
+		sfx.play( "jump" )
 		
 	on_air_time+=delta
 	prev_jump_pressed=jump	
 	
 	if new_facing != self.facing:
 		self.facing = new_facing
-
+	
+	var y = get_pos().y
+	if y > 240:
+		die()
+	
 func _ready():
 	#Initalization here
+	get_parent().player = self
 	set_fixed_process(true)
-	pass
+	
 
 func _set_facing( what ):
 	facing = what

@@ -1,12 +1,36 @@
-[gd_scene load_steps=4 format=1]
+[gd_scene load_steps=8 format=1]
 
 [ext_resource path="res://Dogio/Dogio.gd" type="Script" id=1]
 [ext_resource path="res://assets/graphics/tiles/puppy.png" type="Texture" id=2]
+[ext_resource path="res://assets/sfx/coin.wav" type="Sample" id=3]
+[ext_resource path="res://assets/sfx/death.wav" type="Sample" id=4]
+[ext_resource path="res://assets/sfx/jump.wav" type="Sample" id=5]
 
 [sub_resource type="RectangleShape2D" id=1]
 
 custom_solver_bias = 0.0
 extents = Vector2( 5, 13 )
+
+[sub_resource type="SampleLibrary" id=2]
+
+samples/coin = {
+"db": 0.0,
+"pitch": 1.0,
+"priority": 0,
+"sample": ExtResource( 3 )
+}
+samples/death = {
+"db": 0.0,
+"pitch": 1.0,
+"priority": 0,
+"sample": ExtResource( 4 )
+}
+samples/jump = {
+"db": 0.0,
+"pitch": 1.0,
+"priority": 0,
+"sample": ExtResource( 5 )
+}
 
 [node name="Dogio" type="KinematicBody2D"]
 
@@ -50,5 +74,16 @@ drag_margin/left = 0.2
 drag_margin/top = 0.2
 drag_margin/right = 0.2
 drag_margin/bottom = 0.2
+
+[node name="SFX" type="SamplePlayer2D" parent="."]
+
+params/volume_db = 0.0
+params/pitch_scale = 1.0
+params/attenuation/min_distance = 1.0
+params/attenuation/max_distance = 2048.0
+params/attenuation/distance_exp = 1.0
+config/polyphony = 8
+config/samples = SubResource( 2 )
+config/pitch_random = 0.0
 
 
