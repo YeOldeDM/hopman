@@ -51,6 +51,6 @@ custom_styles/panel = SubResource( 1 )
 
 [node name="Dogio" parent="World" instance=ExtResource( 4 )]
 
-transform/pos = Vector2( 165.251, 160.073 )
+transform/pos = Vector2( 74.056, 119.596 )
 
 

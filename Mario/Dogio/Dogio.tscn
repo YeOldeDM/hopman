@@ -32,7 +32,9 @@ samples/jump = {
 "sample": ExtResource( 5 )
 }
 
-[node name="Dogio" type="KinematicBody2D"]
+[node name="Dogio" type="KinematicBody2D" groups=[
+"player",
+]]
 
 input/pickable = false
 shapes/0/shape = SubResource( 1 )
