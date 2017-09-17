@@ -5,6 +5,9 @@ var obj = [
 	"res://Blocks/Bricks.tscn",
 	"res://Blocks/LuckyBlock.tscn",
 	"res://Googe/Googe.tscn",
+	"res://Blocks/Bricks.tscn",
+	"res://Blocks/LuckyBlock.tscn",
+	"res://Blocks/LuckyBlock.tscn",
 	]
 
 func make():

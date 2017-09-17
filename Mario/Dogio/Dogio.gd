@@ -106,10 +106,14 @@ func _fixed_process(delta):
 	if (is_colliding()):
 		# you can check which tile was collision against with this
 		# print(get_collider_metadata())
-
+		
 		#ran against something, is it the floor? get normal
 		var n = get_collision_normal()
-
+		
+		var c = get_collider()
+		if c.is_in_group("bricks"):
+			if ( rad2deg(acos(n.dot( Vector2(0,1)))) < FLOOR_ANGLE_TOLERANCE ):
+				c.break_bricks()
 		if ( rad2deg(acos(n.dot( Vector2(0,-1)))) < FLOOR_ANGLE_TOLERANCE ):
 			#if angle to the "up" vectors is < angle tolerance
 			#char is on floor

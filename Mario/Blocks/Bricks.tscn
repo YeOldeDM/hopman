@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=1]
+[gd_scene load_steps=5 format=1]
 
 [ext_resource path="res://Blocks/Bricks.gd" type="Script" id=1]
 [ext_resource path="res://assets/graphics/tiles/bricks.png" type="Texture" id=2]
@@ -8,7 +8,26 @@
 custom_solver_bias = 0.0
 points = Vector2Array( 16, 0, 16, 16, 0, 16, 0, 0 )
 
-[node name="Bricks" type="StaticBody2D"]
+[sub_resource type="Animation" id=2]
+
+resource/name = "bump"
+length = 0.5
+loop = false
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:offset")
+tracks/0/interp = 2
+tracks/0/imported = false
+tracks/0/keys = {
+"times": FloatArray( 0, 0.1, 0.5 ),
+"transitions": FloatArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, -4 ), Vector2( 0, 0 ) ]
+}
+
+[node name="Bricks" type="StaticBody2D" groups=[
+"bricks",
+]]
 
 input/pickable = false
 shapes/0/shape = SubResource( 1 )
@@ -21,6 +40,8 @@ constant_angular_velocity = 0.0
 friction = 1.0
 bounce = 0.0
 script/script = ExtResource( 1 )
+bricks = true
+dispenser = false
 
 [node name="Sprite" type="Sprite" parent="."]
 
@@ -33,5 +54,16 @@ build_mode = 0
 polygon = Vector2Array( 16, 0, 16, 16, 0, 16, 0, 0 )
 shape_range = Vector2( 0, 0 )
 trigger = false
+
+[node name="Animator" type="AnimationPlayer" parent="."]
+
+playback/process_mode = 1
+playback/default_blend_time = 0.0
+root/root = NodePath("..")
+anims/bump = SubResource( 2 )
+playback/active = true
+playback/speed = 3.0
+blend_times = [  ]
+autoplay = ""
 
 
