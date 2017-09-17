@@ -3,6 +3,7 @@ extends KinematicBody2D
 
 onready var sprite = get_node( "Sprite" )
 onready var sfx = get_node( "SFX" )
+onready var col = get_node("Collider")
 #This is a simple collision demo showing how
 #the kinematic cotroller works.
 #move() will allow to move the node, and will
@@ -26,6 +27,12 @@ const JUMP_MAX_AIRBORNE_TIME=0.2
 const SLIDE_STOP_VELOCITY=1.0 #one pixel per second
 const SLIDE_STOP_MIN_TRAVEL=1.0 #one pixel
 
+export(Texture) var small_texture = null
+export(Texture) var big_texture = null
+
+var big_shape = {'pos': Vector2(0,3), "shape": RectangleShape2D.new() }
+var small_shape = {'pos': Vector2(0,8), "shape": RectangleShape2D.new() }
+
 var velocity = Vector2()
 var on_air_time=100
 var jumping=false
@@ -35,6 +42,8 @@ var prev_jump_pressed=false
 var facing = 1 setget _set_facing
 
 var dead = false
+
+var ducking = false setget _set_ducking
 
 func die():
 	set_fixed_process( false )
@@ -52,6 +61,8 @@ func _fixed_process(delta):
 	
 	var walk_left = Input.is_action_pressed("LEFT")
 	var walk_right = Input.is_action_pressed("RIGHT")
+	var down = Input.is_action_pressed("DOWN")
+	var up = Input.is_action_pressed("UP")
 	var jump = Input.is_action_pressed("JUMP")
 
 	var stop=true
@@ -89,7 +100,9 @@ func _fixed_process(delta):
 
 
 	var floor_velocity=Vector2()
-
+	
+	self.ducking = down
+	
 	if (is_colliding()):
 		# you can check which tile was collision against with this
 		# print(get_collider_metadata())
@@ -102,6 +115,8 @@ func _fixed_process(delta):
 			#char is on floor
 			on_air_time=0
 			floor_velocity=get_collider_velocity()
+			
+			
 			
 			if walk_right or walk_left:
 				new_facing = sign( velocity.x )
@@ -156,6 +171,11 @@ func _fixed_process(delta):
 	
 func _ready():
 	#Initalization here
+	small_shape.shape.set_extents( Vector2(5,7) )
+#	small_shape.pos = Vector2(0,5) 
+	big_shape.shape.set_extents( Vector2(5,13) )
+#	small_shape.pos = Vector2(0,3)
+
 	get_parent().player = self
 	set_fixed_process(true)
 	
@@ -163,3 +183,24 @@ func _ready():
 func _set_facing( what ):
 	facing = what
 	sprite.set_scale( Vector2( facing, 1 ) )
+
+
+func _set_ducking( what ):
+	if ducking != what:
+		if what:
+#			col.set_pos( small_shape.pos )
+			set_shape_transform( 0, Matrix32( 0.0, small_shape.pos ) )
+			set_shape( 0, small_shape.shape )
+
+			
+			sprite.set_texture( small_texture )
+		else:
+#			col.set_pos( big_shape.pos )
+			set_shape_transform( 0, Matrix32( 0.0, big_shape.pos ) )
+			set_shape( 0, big_shape.shape )
+
+			
+			sprite.set_texture( big_texture )
+	ducking = what
+	prints( ducking, what )
+	

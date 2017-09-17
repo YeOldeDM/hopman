@@ -1,12 +1,13 @@
-[gd_scene load_steps=8 format=1]
+[gd_scene load_steps=9 format=1]
 
 [ext_resource path="res://Dogio/Dogio.gd" type="Script" id=1]
-[ext_resource path="res://assets/graphics/tiles/puppy.png" type="Texture" id=2]
-[ext_resource path="res://assets/sfx/coin.wav" type="Sample" id=3]
-[ext_resource path="res://assets/sfx/death.wav" type="Sample" id=4]
-[ext_resource path="res://assets/sfx/jump.wav" type="Sample" id=5]
+[ext_resource path="res://assets/graphics/player/small_dogio.png" type="Texture" id=2]
+[ext_resource path="res://assets/graphics/player/big_dogio.png" type="Texture" id=3]
+[ext_resource path="res://assets/sfx/coin.wav" type="Sample" id=4]
+[ext_resource path="res://assets/sfx/death.wav" type="Sample" id=5]
+[ext_resource path="res://assets/sfx/jump.wav" type="Sample" id=6]
 
-[sub_resource type="RectangleShape2D" id=1]
+[sub_resource type="RectangleShape2D" id=4]
 
 custom_solver_bias = 0.0
 extents = Vector2( 5, 13 )
@@ -17,19 +18,19 @@ samples/coin = {
 "db": 0.0,
 "pitch": 1.0,
 "priority": 0,
-"sample": ExtResource( 3 )
+"sample": ExtResource( 4 )
 }
 samples/death = {
 "db": 0.0,
 "pitch": 1.0,
 "priority": 0,
-"sample": ExtResource( 4 )
+"sample": ExtResource( 5 )
 }
 samples/jump = {
 "db": 0.0,
 "pitch": 1.0,
 "priority": 0,
-"sample": ExtResource( 5 )
+"sample": ExtResource( 6 )
 }
 
 [node name="Dogio" type="KinematicBody2D" groups=[
@@ -37,26 +38,20 @@ samples/jump = {
 ]]
 
 input/pickable = false
-shapes/0/shape = SubResource( 1 )
+shapes/0/shape = SubResource( 4 )
 shapes/0/transform = Matrix32( 1, 0, 0, 1, 0, 3 )
 shapes/0/trigger = false
 collision/layers = 1
 collision/mask = 1
 collision/margin = 0.08
 script/script = ExtResource( 1 )
+small_texture = ExtResource( 2 )
+big_texture = ExtResource( 3 )
 
 [node name="Sprite" type="Sprite" parent="."]
 
-texture = ExtResource( 2 )
-region = true
+texture = ExtResource( 3 )
 region_rect = Rect2( 48, 80, 16, 32 )
-
-[node name="Collision" type="CollisionShape2D" parent="."]
-
-transform/pos = Vector2( 0, 3 )
-shape = SubResource( 1 )
-trigger = false
-_update_shape_index = 0
 
 [node name="Camera2D" type="Camera2D" parent="."]
 
@@ -87,5 +82,12 @@ params/attenuation/distance_exp = 1.0
 config/polyphony = 8
 config/samples = SubResource( 2 )
 config/pitch_random = 0.0
+
+[node name="Collider" type="CollisionShape2D" parent="."]
+
+transform/pos = Vector2( 0, 3 )
+shape = SubResource( 4 )
+trigger = false
+_update_shape_index = 0
 
 

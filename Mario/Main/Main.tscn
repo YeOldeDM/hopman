@@ -14,7 +14,7 @@ content_margin/bottom = -1.0
 bg_color = Color( 0, 0, 0, 1 )
 light_color = Color( 0.8, 0.8, 0.8, 1 )
 dark_color = Color( 0.8, 0.8, 0.8, 1 )
-border_size = 1
+border_size = 2
 border_blend = true
 draw_bg = true
 
@@ -51,6 +51,6 @@ custom_styles/panel = SubResource( 1 )
 
 [node name="Dogio" parent="World" instance=ExtResource( 4 )]
 
-transform/pos = Vector2( 74.056, 119.596 )
+transform/pos = Vector2( 80, -16 )
 
 

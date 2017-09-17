@@ -1,6 +1,6 @@
 extends KinematicBody2D
 
-onready var sfx = get_node("SFX")
+
 
 
 

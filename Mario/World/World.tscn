@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=1]
+[gd_scene load_steps=6 format=1]
 
 [ext_resource path="res://World/World.gd" type="Script" id=1]
 [ext_resource path="res://World/Level.tscn" type="PackedScene" id=2]
-[ext_resource path="res://assets/graphics/bg/hills.png" type="Texture" id=3]
+[ext_resource path="res://assets/graphics/tiles/cloud_block.png" type="Texture" id=3]
+[ext_resource path="res://assets/graphics/bg/hills.png" type="Texture" id=4]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 
@@ -52,6 +53,30 @@ texture/rotation = 0.0
 invert/enable = false
 invert/border = 100.0
 
+[node name="Clouds" type="ParallaxLayer" parent="BG"]
+
+motion/scale = Vector2( 0.1, 0 )
+motion/offset = Vector2( 0, 0 )
+motion/mirroring = Vector2( 256, 0 )
+
+[node name="Sprite" type="Sprite" parent="BG/Clouds"]
+
+transform/pos = Vector2( 32, 64 )
+texture = ExtResource( 3 )
+centered = false
+
+[node name="Sprite1" type="Sprite" parent="BG/Clouds"]
+
+transform/pos = Vector2( 104, 40 )
+texture = ExtResource( 3 )
+centered = false
+
+[node name="Sprite2" type="Sprite" parent="BG/Clouds"]
+
+transform/pos = Vector2( 192, 112 )
+texture = ExtResource( 3 )
+centered = false
+
 [node name="Hills" type="ParallaxLayer" parent="BG"]
 
 motion/scale = Vector2( 0.5, 0 )
@@ -61,7 +86,7 @@ motion/mirroring = Vector2( 256, 0 )
 [node name="Sprite" type="Sprite" parent="BG/Hills"]
 
 transform/pos = Vector2( 0, 64 )
-texture = ExtResource( 3 )
+texture = ExtResource( 4 )
 centered = false
 
 [node name="LeftWall" type="StaticBody2D" parent="."]
