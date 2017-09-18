@@ -4,6 +4,8 @@ extends KinematicBody2D
 onready var sprite = get_node( "Sprite" )
 onready var sfx = get_node( "SFX" )
 onready var col = get_node("Collider")
+
+onready var animator = get_node("Animator")
 #This is a simple collision demo showing how
 #the kinematic cotroller works.
 #move() will allow to move the node, and will
@@ -45,6 +47,8 @@ var dead = false
 
 var ducking = false setget _set_ducking
 
+var anim = "idle" setget _set_anim
+
 func die():
 	set_fixed_process( false )
 	sfx.play( "death" )
@@ -56,6 +60,7 @@ func get_coin( coin ):
 
 func _fixed_process(delta):
 	var new_facing = self.facing
+	var new_anim = "idle"
 	#create forces
 	var force = Vector2(0,GRAVITY)
 	
@@ -71,11 +76,13 @@ func _fixed_process(delta):
 		if (velocity.x<=WALK_MIN_SPEED and velocity.x > -WALK_MAX_SPEED):
 			force.x-=WALK_FORCE			
 			stop=false
+		new_anim = "run"
 		
 	elif (walk_right):
 		if (velocity.x>=-WALK_MIN_SPEED and velocity.x < WALK_MAX_SPEED):
 			force.x+=WALK_FORCE
 			stop=false
+		new_anim = "run"
 	
 	if (stop):
 		var vsign = sign(velocity.x)
@@ -88,6 +95,8 @@ func _fixed_process(delta):
 		velocity.x=vlen*vsign
 		
 
+		
+	
 		
 	#integrate forces to velocity
 	velocity += force * delta
@@ -102,6 +111,7 @@ func _fixed_process(delta):
 	var floor_velocity=Vector2()
 	
 	self.ducking = down
+	
 	
 	if (is_colliding()):
 		# you can check which tile was collision against with this
@@ -166,8 +176,15 @@ func _fixed_process(delta):
 	on_air_time+=delta
 	prev_jump_pressed=jump	
 	
+	if on_air_time > JUMP_MAX_AIRBORNE_TIME:
+		new_anim = "jump"
+	if ducking:
+		new_anim = "crouch"
 	if new_facing != self.facing:
 		self.facing = new_facing
+	
+	if new_anim != self.anim:
+		self.anim = new_anim
 	
 	var y = get_pos().y
 	if y > 240:
@@ -196,15 +213,21 @@ func _set_ducking( what ):
 			set_shape_transform( 0, Matrix32( 0.0, small_shape.pos ) )
 			set_shape( 0, small_shape.shape )
 
+
 			
-			sprite.set_texture( small_texture )
 		else:
 #			col.set_pos( big_shape.pos )
 			set_shape_transform( 0, Matrix32( 0.0, big_shape.pos ) )
 			set_shape( 0, big_shape.shape )
 
 			
-			sprite.set_texture( big_texture )
-	ducking = what
-	prints( ducking, what )
+
 	
+	ducking = what
+
+
+
+
+func _set_anim( what ):
+	anim = what
+	animator.play( anim )
