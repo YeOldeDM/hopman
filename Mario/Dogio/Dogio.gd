@@ -121,9 +121,12 @@ func _fixed_process(delta):
 		var n = get_collision_normal()
 		
 		var c = get_collider()
+		
+		# Detect bricks hitting our head
 		if c.is_in_group("bricks"):
 			if ( rad2deg(acos(n.dot( Vector2(0,1)))) < FLOOR_ANGLE_TOLERANCE ):
 				c.break_bricks()
+		
 		if ( rad2deg(acos(n.dot( Vector2(0,-1)))) < FLOOR_ANGLE_TOLERANCE ):
 			#if angle to the "up" vectors is < angle tolerance
 			#char is on floor
