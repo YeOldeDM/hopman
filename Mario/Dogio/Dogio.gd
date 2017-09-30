@@ -2,7 +2,7 @@
 extends KinematicBody2D
 
 onready var sprite = get_node( "Sprite" )
-onready var sfx = get_node( "SFX" )
+
 onready var col = get_node("Collider")
 
 onready var animator = get_node("Animator")
@@ -23,7 +23,7 @@ const WALK_FORCE = 600
 const WALK_MIN_SPEED=10
 const WALK_MAX_SPEED = 200
 const STOP_FORCE = 1300
-const JUMP_SPEED = 250
+const JUMP_SPEED = 235
 const JUMP_MAX_AIRBORNE_TIME=0.2
 
 const SLIDE_STOP_VELOCITY=1.0 #one pixel per second
@@ -51,11 +51,11 @@ var anim = "idle" setget _set_anim
 
 func die():
 	set_fixed_process( false )
-	sfx.play( "death" )
+	SoundMan.play( "death" )
 	self.dead = true
 
 func get_coin( coin ):
-	sfx.play( "coin" )
+	SoundMan.play( "coin" )
 	coin.queue_free()
 
 func _fixed_process(delta):
@@ -72,17 +72,18 @@ func _fixed_process(delta):
 
 	var stop=true
 	
-	if (walk_left):
-		if (velocity.x<=WALK_MIN_SPEED and velocity.x > -WALK_MAX_SPEED):
-			force.x-=WALK_FORCE			
-			stop=false
-		new_anim = "run"
-		
-	elif (walk_right):
-		if (velocity.x>=-WALK_MIN_SPEED and velocity.x < WALK_MAX_SPEED):
-			force.x+=WALK_FORCE
-			stop=false
-		new_anim = "run"
+	if not ducking:
+		if (walk_left):
+			if (velocity.x<=WALK_MIN_SPEED and velocity.x > -WALK_MAX_SPEED):
+				force.x-=WALK_FORCE			
+				stop=false
+			new_anim = "run"
+			
+		elif (walk_right):
+			if (velocity.x>=-WALK_MIN_SPEED and velocity.x < WALK_MAX_SPEED):
+				force.x+=WALK_FORCE
+				stop=false
+			new_anim = "run"
 	
 	if (stop):
 		var vsign = sign(velocity.x)
@@ -136,7 +137,8 @@ func _fixed_process(delta):
 			
 			
 			if walk_right or walk_left:
-				new_facing = sign( velocity.x )
+				new_facing = walk_right - walk_left
+
 
 		if (on_air_time==0 and force.x==0 and get_travel().length() < SLIDE_STOP_MIN_TRAVEL and abs(velocity.x) < SLIDE_STOP_VELOCITY and get_collider_velocity()==Vector2()):
 			#Since this formula will always slide the character around, 
@@ -174,7 +176,7 @@ func _fixed_process(delta):
 		# Makes controls more snappy.
 		velocity.y=-JUMP_SPEED	
 		jumping=true
-		sfx.play( "jump" )
+		SoundMan.play( "jump" )
 		
 	on_air_time+=delta
 	prev_jump_pressed=jump	

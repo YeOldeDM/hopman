@@ -55,7 +55,7 @@ func _on_Hitbox_body_enter( body ):
 	if body.is_in_group("player"):
 		var ydiff = (get_pos().y - 8) - (body.get_pos().y + 8)
 		if ydiff > 0:
-			body.sfx.play("squish")
+			SoundMan.play("squish")
 			squish()
 
 

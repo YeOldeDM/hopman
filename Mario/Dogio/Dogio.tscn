@@ -1,40 +1,16 @@
-[gd_scene load_steps=14 format=1]
+[gd_scene load_steps=10 format=1]
 
 [ext_resource path="res://Dogio/Dogio.gd" type="Script" id=1]
 [ext_resource path="res://assets/graphics/player/small_dogio.png" type="Texture" id=2]
 [ext_resource path="res://assets/graphics/player/big_dogio.png" type="Texture" id=3]
 [ext_resource path="res://assets/graphics/player/big_dogio_spritesheet.png" type="Texture" id=4]
-[ext_resource path="res://assets/sfx/coin.wav" type="Sample" id=5]
-[ext_resource path="res://assets/sfx/death.wav" type="Sample" id=6]
-[ext_resource path="res://assets/sfx/jump.wav" type="Sample" id=7]
 
 [sub_resource type="RectangleShape2D" id=1]
 
 custom_solver_bias = 0.0
 extents = Vector2( 5, 13 )
 
-[sub_resource type="SampleLibrary" id=2]
-
-samples/coin = {
-"db": 0.0,
-"pitch": 1.0,
-"priority": 0,
-"sample": ExtResource( 5 )
-}
-samples/death = {
-"db": 0.0,
-"pitch": 1.0,
-"priority": 0,
-"sample": ExtResource( 6 )
-}
-samples/jump = {
-"db": 0.0,
-"pitch": 1.0,
-"priority": 0,
-"sample": ExtResource( 7 )
-}
-
-[sub_resource type="Animation" id=3]
+[sub_resource type="Animation" id=2]
 
 resource/name = "crouch"
 length = 0.1
@@ -51,7 +27,7 @@ tracks/0/keys = {
 "values": [ 3, 5 ]
 }
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id=3]
 
 length = 0.2
 loop = true
@@ -67,7 +43,7 @@ tracks/0/keys = {
 "values": [ 0, 4 ]
 }
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=4]
 
 length = 0.1
 loop = false
@@ -83,7 +59,7 @@ tracks/0/keys = {
 "values": [ 2 ]
 }
 
-[sub_resource type="Animation" id=6]
+[sub_resource type="Animation" id=5]
 
 length = 0.2
 loop = true
@@ -140,17 +116,6 @@ drag_margin/top = 0.2
 drag_margin/right = 0.2
 drag_margin/bottom = 0.2
 
-[node name="SFX" type="SamplePlayer2D" parent="."]
-
-params/volume_db = 0.0
-params/pitch_scale = 1.0
-params/attenuation/min_distance = 1.0
-params/attenuation/max_distance = 2048.0
-params/attenuation/distance_exp = 1.0
-config/polyphony = 8
-config/samples = SubResource( 2 )
-config/pitch_random = 0.0
-
 [node name="Collider" type="CollisionShape2D" parent="."]
 
 transform/pos = Vector2( 0, 3 )
@@ -163,10 +128,10 @@ _update_shape_index = 0
 playback/process_mode = 1
 playback/default_blend_time = 0.0
 root/root = NodePath("..")
-anims/crouch = SubResource( 3 )
-anims/idle = SubResource( 4 )
-anims/jump = SubResource( 5 )
-anims/run = SubResource( 6 )
+anims/crouch = SubResource( 2 )
+anims/idle = SubResource( 3 )
+anims/jump = SubResource( 4 )
+anims/run = SubResource( 5 )
 playback/active = true
 playback/speed = 1.0
 blend_times = [  ]
