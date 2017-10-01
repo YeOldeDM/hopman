@@ -1,14 +1,13 @@
-[gd_scene load_steps=10 format=1]
+[gd_scene load_steps=9 format=1]
 
 [ext_resource path="res://Dogio/Dogio.gd" type="Script" id=1]
-[ext_resource path="res://assets/graphics/player/small_dogio.png" type="Texture" id=2]
-[ext_resource path="res://assets/graphics/player/big_dogio.png" type="Texture" id=3]
-[ext_resource path="res://assets/graphics/player/big_dogio_spritesheet.png" type="Texture" id=4]
+[ext_resource path="res://assets/graphics/player/small_dogio_spritesheet.png" type="Texture" id=2]
+[ext_resource path="res://assets/graphics/player/big_dogio_spritesheet.png" type="Texture" id=3]
 
-[sub_resource type="RectangleShape2D" id=1]
+[sub_resource type="RectangleShape2D" id=6]
 
 custom_solver_bias = 0.0
-extents = Vector2( 5, 13 )
+extents = Vector2( 5, 8 )
 
 [sub_resource type="Animation" id=2]
 
@@ -80,8 +79,8 @@ tracks/0/keys = {
 ]]
 
 input/pickable = false
-shapes/0/shape = SubResource( 1 )
-shapes/0/transform = Matrix32( 1, 0, 0, 1, 0, 3 )
+shapes/0/shape = SubResource( 6 )
+shapes/0/transform = Matrix32( 1, 0, 0, 1, 0, 8 )
 shapes/0/trigger = false
 collision/layers = 1
 collision/mask = 1
@@ -92,10 +91,10 @@ big_texture = ExtResource( 3 )
 
 [node name="Sprite" type="Sprite" parent="."]
 
-texture = ExtResource( 4 )
+texture = ExtResource( 2 )
 vframes = 3
 hframes = 2
-frame = 3
+frame = 4
 
 [node name="Camera2D" type="Camera2D" parent="."]
 
@@ -118,8 +117,8 @@ drag_margin/bottom = 0.2
 
 [node name="Collider" type="CollisionShape2D" parent="."]
 
-transform/pos = Vector2( 0, 3 )
-shape = SubResource( 1 )
+transform/pos = Vector2( 0, 8 )
+shape = SubResource( 6 )
 trigger = false
 _update_shape_index = 0
 

@@ -57,6 +57,8 @@ func _on_Hitbox_body_enter( body ):
 		if ydiff > 0:
 			SoundMan.play("squish")
 			squish()
+		else:
+			body.get_hit(self)
 
 
 func _on_Vis_enter_screen():

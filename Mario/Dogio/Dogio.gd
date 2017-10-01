@@ -49,6 +49,14 @@ var ducking = false setget _set_ducking
 
 var anim = "idle" setget _set_anim
 
+var super_dog = false setget _set_super_dog
+
+func get_hit( by ):
+	if self.super_dog:
+		self.super_dog = false
+	else:
+		die()
+
 func die():
 	set_fixed_process( false )
 	SoundMan.play( "death" )
@@ -57,6 +65,14 @@ func die():
 func get_coin( coin ):
 	SoundMan.play( "coin" )
 	coin.queue_free()
+
+func make_big():
+	if not self.super_dog:
+		self.super_dog = true
+
+func make_small():
+	if self.super_dog:
+		self.super_dog = false
 
 func _fixed_process(delta):
 	var new_facing = self.facing
@@ -111,7 +127,7 @@ func _fixed_process(delta):
 
 	var floor_velocity=Vector2()
 	
-	self.ducking = down
+	self.ducking = down if self.super_dog else false
 	
 	
 	if (is_colliding()):
@@ -126,7 +142,7 @@ func _fixed_process(delta):
 		# Detect bricks hitting our head
 		if c.is_in_group("bricks"):
 			if ( rad2deg(acos(n.dot( Vector2(0,1)))) < FLOOR_ANGLE_TOLERANCE ):
-				c.break_bricks()
+				c.break_bricks(self)
 		
 		if ( rad2deg(acos(n.dot( Vector2(0,-1)))) < FLOOR_ANGLE_TOLERANCE ):
 			#if angle to the "up" vectors is < angle tolerance
@@ -197,12 +213,13 @@ func _fixed_process(delta):
 	
 func _ready():
 	#Initalization here
-	small_shape.shape.set_extents( Vector2(5,7) )
+	small_shape.shape.set_extents( Vector2(5,8) )
 #	small_shape.pos = Vector2(0,5) 
 	big_shape.shape.set_extents( Vector2(5,13) )
 #	small_shape.pos = Vector2(0,3)
 
 	get_parent().player = self
+	make_small()
 	set_fixed_process(true)
 	
 
@@ -236,3 +253,16 @@ func _set_ducking( what ):
 func _set_anim( what ):
 	anim = what
 	animator.play( anim )
+
+
+func _set_super_dog( what ):
+	super_dog = what
+	if super_dog == true:
+		sprite.set_texture( self.big_texture )
+		set_shape_transform( 0, Matrix32( 0.0, big_shape.pos ) )
+		set_shape( 0, big_shape.shape )
+	else:
+		self.ducking = false
+		sprite.set_texture( self.small_texture )
+		set_shape_transform( 0, Matrix32( 0.0, small_shape.pos ) )
+		set_shape( 0, small_shape.shape )

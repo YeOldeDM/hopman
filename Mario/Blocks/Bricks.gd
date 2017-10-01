@@ -5,15 +5,17 @@ onready var animator = get_node("Animator")
 export(bool) var bricks = false
 export(bool) var dispenser = false
 
-func break_bricks():
-	if self.bricks and !dispenser:
-		var gibs = preload("res://Blocks/BrickGibs.tscn").instance()
-		get_parent().add_child(gibs)
-		gibs.set_pos( get_pos() )
-		gibs.set_emitting(true)
-		queue_free()
-		
-	if self.dispenser:
+func break_bricks( player ):
+	if player.super_dog:
+		if self.bricks and !dispenser:
+			var gibs = preload("res://Blocks/BrickGibs.tscn").instance()
+			get_parent().add_child(gibs)
+			gibs.set_pos( get_pos() )
+			gibs.set_emitting(true)
+			queue_free()
+		if self.dispenser:
+			animator.play("bump")
+	else:
 		animator.play("bump")
 
 func _ready():
